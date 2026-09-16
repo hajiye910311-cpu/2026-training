@@ -1,46 +1,60 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>2026학년도 교직원 연수 이수증 및 영수증 제출</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR",
+        "Malgun Gothic", sans-serif;
       background: #f5f7fb;
       color: #222;
     }
+
     .wrap {
       width: min(720px, calc(100% - 32px));
       margin: 50px auto;
     }
+
     .card {
       background: #fff;
       border-radius: 18px;
       padding: 36px;
       box-shadow: 0 8px 30px rgba(30, 50, 80, .08);
     }
+
     h1 {
       margin: 0 0 10px;
       font-size: 27px;
       line-height: 1.35;
       text-align: center;
     }
+
     .subtitle {
       text-align: center;
       color: #687386;
       margin: 0 0 32px;
       font-size: 14px;
     }
+
     label {
       display: block;
       margin: 20px 0 8px;
       font-weight: 700;
       font-size: 15px;
     }
-    input, select {
+
+    input,
+    select {
       width: 100%;
       padding: 13px 14px;
       border: 1px solid #d8dee8;
@@ -48,23 +62,28 @@
       font-size: 15px;
       background: #fff;
     }
-    input:focus, select:focus {
+
+    input:focus,
+    select:focus {
       outline: none;
       border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102,126,234,.12);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, .12);
     }
+
     .file-box {
       border: 1px dashed #c9d1df;
       border-radius: 10px;
       padding: 12px;
       background: #fafbfe;
     }
+
     .hint {
       margin-top: 7px;
       color: #7a8495;
       font-size: 12px;
       line-height: 1.5;
     }
+
     button {
       width: 100%;
       margin-top: 30px;
@@ -77,7 +96,16 @@
       font-weight: 700;
       cursor: pointer;
     }
-    button:hover { background: #566bd1; }
+
+    button:hover {
+      background: #566bd1;
+    }
+
+    button:disabled {
+      background: #aeb6cc;
+      cursor: wait;
+    }
+
     .notice {
       margin-top: 22px;
       padding: 14px 16px;
@@ -87,81 +115,465 @@
       font-size: 13px;
       line-height: 1.6;
     }
-    .success {
+
+    .success,
+    .error {
       display: none;
       margin-top: 20px;
       padding: 16px;
       border-radius: 10px;
-      background: #eefaf2;
-      color: #287244;
       font-weight: 600;
       text-align: center;
+      line-height: 1.6;
     }
+
+    .success {
+      background: #eefaf2;
+      color: #287244;
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #b42318;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 10px;
+      color: #667085;
+      font-size: 13px;
+      text-align: center;
+    }
+
     @media (max-width: 600px) {
-      .wrap { margin: 20px auto; }
-      .card { padding: 24px 18px; }
-      h1 { font-size: 22px; }
+      .wrap {
+        margin: 20px auto;
+      }
+
+      .card {
+        padding: 24px 18px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <main class="wrap">
-    <section class="card">
-      <h1>2026학년도 교직원 연수<br>이수증 및 영수증 제출</h1>
-      <p class="subtitle">교직원 연수 이수증 및 영수증을 제출해주세요.</p>
 
-      <form id="submissionForm">
-        <label for="name">교직원 이름</label>
-        <select id="name" required>
-          <option value="">이름을 선택해주세요</option>
-          <!-- 실제 교직원 명단은 다음 단계에서 Google Sheets와 연결합니다. -->
-          <option>홍길동</option>
-          <option>김교사</option>
-          <option>이교사</option>
-        </select>
+<main class="wrap">
+  <section class="card">
 
-        <label for="trainingName">연수명</label>
-        <input id="trainingName" type="text" placeholder="예: 아동학대 예방교육" required>
+    <h1>
+      2026학년도 교직원 연수<br>
+      이수증 및 영수증 제출
+    </h1>
 
-        <label for="institution">연수기관</label>
-        <input id="institution" type="text" placeholder="예: ○○교육연수원" required>
+    <p class="subtitle">
+      교직원 연수 이수증 및 영수증을 제출해주세요.
+    </p>
 
-        <label for="period">연수기간</label>
-        <input id="period" type="text" placeholder="예: 2026.03.01.~2026.03.31.">
+    <form id="submissionForm">
 
-        <label for="certificate">이수증</label>
-        <div class="file-box">
-          <input id="certificate" type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-        </div>
-        <div class="hint">PDF, JPG, JPEG, PNG 파일을 선택해주세요.</div>
+      <label for="name">교직원 이름</label>
 
-        <label for="receipt">영수증</label>
-        <div class="file-box">
-          <input id="receipt" type="file" accept=".pdf,.jpg,.jpeg,.png">
-        </div>
-        <div class="hint">영수증이 있는 경우 첨부해주세요.</div>
+      <select id="name" required>
+        <option value="">이름을 불러오는 중...</option>
+      </select>
 
-        <button type="submit">제출하기</button>
-      </form>
+      <label for="trainingName">연수명</label>
 
-      <div class="notice">
-        ※ 현재 버전은 화면 구성 확인용입니다.<br>
-        ※ 실제 제출 기능은 다음 단계에서 Google Sheets와 Google Drive를 연결하면 작동하도록 만들 수 있습니다.
+      <input
+        id="trainingName"
+        type="text"
+        placeholder="예: 아동학대 예방교육"
+        required
+      >
+
+      <label for="institution">연수기관</label>
+
+      <input
+        id="institution"
+        type="text"
+        placeholder="예: ○○교육연수원"
+        required
+      >
+
+      <label for="period">연수기간</label>
+
+      <input
+        id="period"
+        type="text"
+        placeholder="예: 2026.03.01.~2026.03.31."
+      >
+
+      <label for="certificate">이수증</label>
+
+      <div class="file-box">
+        <input
+          id="certificate"
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          required
+        >
       </div>
 
-      <div id="success" class="success">
-        제출 정보가 입력되었습니다.<br>
-        다음 단계에서 실제 저장 기능을 연결할 수 있습니다.
+      <div class="hint">
+        PDF, JPG, JPEG, PNG 파일을 선택해주세요.
       </div>
-    </section>
-  </main>
 
-  <script>
-    document.getElementById("submissionForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      document.getElementById("success").style.display = "block";
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      <label for="receipt">영수증</label>
+
+      <div class="file-box">
+        <input
+          id="receipt"
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+        >
+      </div>
+
+      <div class="hint">
+        영수증이 있는 경우 첨부해주세요.
+      </div>
+
+      <button id="submitButton" type="submit">
+        제출하기
+      </button>
+
+      <div id="loading" class="loading">
+        제출 중입니다. 잠시만 기다려주세요.
+      </div>
+
+    </form>
+
+    <div class="notice">
+      ※ 제출한 이수증과 영수증은 담당자가 확인할 수 있도록
+      Google Drive에 저장됩니다.<br>
+      ※ 제출 정보는 Google Sheets에 기록됩니다.
+    </div>
+
+    <div id="success" class="success">
+      제출이 완료되었습니다.<br>
+      감사합니다.
+    </div>
+
+    <div id="error" class="error"></div>
+
+  </section>
+</main>
+
+
+<script>
+
+  // -----------------------------------------
+  // Google Apps Script 웹 앱 주소
+  // -----------------------------------------
+
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbwhTXX4oQua1PbJN1Sm3mYtg6rpaqbhB6PN5kp_gSKAj7qAmeSBnR64oggk3DOHlS4YqA/exec";
+
+
+  // -----------------------------------------
+  // 교직원 이름 목록 불러오기
+  // -----------------------------------------
+
+  function loadNames() {
+
+    const callbackName =
+      "googleSheetsCallback_" + Date.now();
+
+    window[callbackName] = function(result) {
+
+      const select =
+        document.getElementById("name");
+
+      select.innerHTML =
+        '<option value="">이름을 선택해주세요</option>';
+
+      if (
+        result &&
+        result.success &&
+        Array.isArray(result.names)
+      ) {
+
+        result.names.forEach(function(name) {
+
+          const option =
+            document.createElement("option");
+
+          option.value = name;
+          option.textContent = name;
+
+          select.appendChild(option);
+
+        });
+
+      } else {
+
+        select.innerHTML =
+          '<option value="">이름 목록을 불러오지 못했습니다.</option>';
+
+      }
+
+      delete window[callbackName];
+
+      const script =
+        document.getElementById(callbackName);
+
+      if (script) {
+        script.remove();
+      }
+    };
+
+
+    const script =
+      document.createElement("script");
+
+    script.id = callbackName;
+
+    script.src =
+      SCRIPT_URL +
+      "?callback=" +
+      encodeURIComponent(callbackName);
+
+    script.onerror = function() {
+
+      const select =
+        document.getElementById("name");
+
+      select.innerHTML =
+        '<option value="">이름 목록을 불러오지 못했습니다.</option>';
+
+      delete window[callbackName];
+
+      script.remove();
+    };
+
+    document.body.appendChild(script);
+  }
+
+
+  // -----------------------------------------
+  // 파일을 Base64로 변환
+  // -----------------------------------------
+
+  function fileToBase64(file) {
+
+    return new Promise(function(resolve, reject) {
+
+      const reader =
+        new FileReader();
+
+      reader.onload = function() {
+
+        const result =
+          reader.result;
+
+        const base64 =
+          result.split(",")[1];
+
+        resolve(base64);
+      };
+
+      reader.onerror = function() {
+        reject(
+          new Error("파일을 읽을 수 없습니다.")
+        );
+      };
+
+      reader.readAsDataURL(file);
     });
-  </script>
+  }
+
+
+  // -----------------------------------------
+  // 제출 처리
+  // -----------------------------------------
+
+  document
+    .getElementById("submissionForm")
+    .addEventListener("submit", async function(e) {
+
+      e.preventDefault();
+
+      const name =
+        document.getElementById("name").value;
+
+      const trainingName =
+        document.getElementById("trainingName").value.trim();
+
+      const institution =
+        document.getElementById("institution").value.trim();
+
+      const period =
+        document.getElementById("period").value.trim();
+
+      const certificate =
+        document.getElementById("certificate").files[0];
+
+      const receipt =
+        document.getElementById("receipt").files[0];
+
+      const button =
+        document.getElementById("submitButton");
+
+      const loading =
+        document.getElementById("loading");
+
+      const success =
+        document.getElementById("success");
+
+      const error =
+        document.getElementById("error");
+
+
+      success.style.display = "none";
+      error.style.display = "none";
+
+
+      if (!name) {
+        error.textContent =
+          "교직원 이름을 선택해주세요.";
+
+        error.style.display = "block";
+        return;
+      }
+
+
+      if (!certificate) {
+        error.textContent =
+          "이수증을 첨부해주세요.";
+
+        error.style.display = "block";
+        return;
+      }
+
+
+      button.disabled = true;
+      button.textContent = "제출 중...";
+
+      loading.style.display = "block";
+
+
+      try {
+
+        const certificateBase64 =
+          await fileToBase64(certificate);
+
+
+        let receiptData = null;
+
+
+        if (receipt) {
+
+          const receiptBase64 =
+            await fileToBase64(receipt);
+
+          receiptData = {
+
+            name: receipt.name,
+
+            type:
+              receipt.type ||
+              "application/octet-stream",
+
+            data:
+              receiptBase64
+
+          };
+
+        }
+
+
+        const data = {
+
+          name: name,
+
+          trainingName: trainingName,
+
+          institution: institution,
+
+          period: period,
+
+          certificate: {
+
+            name: certificate.name,
+
+            type:
+              certificate.type ||
+              "application/octet-stream",
+
+            data:
+              certificateBase64
+
+          },
+
+          receipt: receiptData
+
+        };
+
+
+        await fetch(
+          SCRIPT_URL,
+          {
+            method: "POST",
+
+            mode: "no-cors",
+
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8"
+            },
+
+            body: JSON.stringify(data)
+          }
+        );
+
+
+        success.style.display = "block";
+
+        document
+          .getElementById("submissionForm")
+          .reset();
+
+
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
+
+
+      } catch (err) {
+
+        console.error(err);
+
+        error.textContent =
+          "제출 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+
+        error.style.display = "block";
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent = "제출하기";
+
+        loading.style.display = "none";
+
+      }
+
+    });
+
+
+  // -----------------------------------------
+  // 페이지가 열리면 이름 목록 불러오기
+  // -----------------------------------------
+
+  loadNames();
+
+</script>
+
 </body>
 </html>
+```
