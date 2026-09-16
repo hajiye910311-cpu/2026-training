@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026학년도 교직원 연수 이수증 및 영수증 제출</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Malgun Gothic", sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
+    .wrap {
+      width: min(720px, calc(100% - 32px));
+      margin: 50px auto;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: 0 8px 30px rgba(30, 50, 80, .08);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 27px;
+      line-height: 1.35;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #687386;
+      margin: 0 0 32px;
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      margin: 20px 0 8px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d8dee8;
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,.12);
+    }
+    .file-box {
+      border: 1px dashed #c9d1df;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafbfe;
+    }
+    .hint {
+      margin-top: 7px;
+      color: #7a8495;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    button {
+      width: 100%;
+      margin-top: 30px;
+      padding: 15px;
+      border: 0;
+      border-radius: 11px;
+      background: #667eea;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #566bd1; }
+    .notice {
+      margin-top: 22px;
+      padding: 14px 16px;
+      background: #f1f4ff;
+      border-radius: 10px;
+      color: #53627a;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .success {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      background: #eefaf2;
+      color: #287244;
+      font-weight: 600;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .wrap { margin: 20px auto; }
+      .card { padding: 24px 18px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>2026학년도 교직원 연수<br>이수증 및 영수증 제출</h1>
+      <p class="subtitle">교직원 연수 이수증 및 영수증을 제출해주세요.</p>
+
+      <form id="submissionForm">
+        <label for="name">교직원 이름</label>
+        <select id="name" required>
+          <option value="">이름을 선택해주세요</option>
+          <!-- 실제 교직원 명단은 다음 단계에서 Google Sheets와 연결합니다. -->
+          <option>홍길동</option>
+          <option>김교사</option>
+          <option>이교사</option>
+        </select>
+
+        <label for="trainingName">연수명</label>
+        <input id="trainingName" type="text" placeholder="예: 아동학대 예방교육" required>
+
+        <label for="institution">연수기관</label>
+        <input id="institution" type="text" placeholder="예: ○○교육연수원" required>
+
+        <label for="period">연수기간</label>
+        <input id="period" type="text" placeholder="예: 2026.03.01.~2026.03.31.">
+
+        <label for="certificate">이수증</label>
+        <div class="file-box">
+          <input id="certificate" type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+        </div>
+        <div class="hint">PDF, JPG, JPEG, PNG 파일을 선택해주세요.</div>
+
+        <label for="receipt">영수증</label>
+        <div class="file-box">
+          <input id="receipt" type="file" accept=".pdf,.jpg,.jpeg,.png">
+        </div>
+        <div class="hint">영수증이 있는 경우 첨부해주세요.</div>
+
+        <button type="submit">제출하기</button>
+      </form>
+
+      <div class="notice">
+        ※ 현재 버전은 화면 구성 확인용입니다.<br>
+        ※ 실제 제출 기능은 다음 단계에서 Google Sheets와 Google Drive를 연결하면 작동하도록 만들 수 있습니다.
+      </div>
+
+      <div id="success" class="success">
+        제출 정보가 입력되었습니다.<br>
+        다음 단계에서 실제 저장 기능을 연결할 수 있습니다.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("submissionForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("success").style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
